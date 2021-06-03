@@ -25,6 +25,6 @@ public class Usuario {
 	private String senha;
 	
 	@NotNull
-	private String tipo_usuario; //se é prof ou aluno
+	private String tipoUsuario; //se é prof ou aluno
 
 }
