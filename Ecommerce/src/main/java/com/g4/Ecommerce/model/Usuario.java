@@ -60,11 +60,11 @@ public class Usuario {
 	}
 
 	public String getTipo_usuario() {
-		return tipo_usuario;
+		return tipoUsuario;
 	}
 
 	public void setTipo_usuario(String tipo_usuario) {
-		this.tipo_usuario = tipo_usuario;
+		this.tipoUsuario = tipo_usuario;
 	}
 
 }
