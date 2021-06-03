@@ -59,12 +59,14 @@ public class Usuario {
 		this.senha = senha;
 	}
 
-	public String getTipo_usuario() {
+	public String getTipoUsuario() {
 		return tipoUsuario;
 	}
 
-	public void setTipo_usuario(String tipo_usuario) {
-		this.tipoUsuario = tipo_usuario;
+	public void setTipoUsuario(String tipoUsuario) {
+		this.tipoUsuario = tipoUsuario;
 	}
+
+	
 
 }
