@@ -13,9 +13,6 @@ import javax.validation.constraints.NotNull;
 
 //import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-
-
-
 @Entity
 @Table(name = "tb_produto")
 public class Produto {
@@ -31,21 +28,47 @@ public class Produto {
 	private String descricao;
 	
 	@NotNull
-	private String link;
+	private String link; //para inserir imagem
 	
+	/*
 	@NotNull
 	private boolean statusTermo;
 	
-	
 	/*@OneToMany(mappedBy = "descricao", cascade = CascadeType.ALL )  
 	@JsonIgnoreProperties("descricao")
-	private List<Categoria> categoria;*/
-	
-	
-	
+	private List<Categoria> categoria;
+	*/
 
-	
-	
-	
+	public long getId() {
+		return id;
+	}
 
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public String getLink() {
+		return link;
+	}
+
+	public void setLink(String link) {
+		this.link = link;
+	}
+	
 }

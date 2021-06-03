@@ -20,7 +20,7 @@ import com.g4.Ecommerce.repository.CategoriaRepository;
 
 @RestController
 @RequestMapping("/categorias")
-@CrossOrigin(originPatterns = "*", allowedHeaders = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class CategoriaController {
 	@Autowired
 	private CategoriaRepository repository;
@@ -36,12 +36,12 @@ public class CategoriaController {
 				orElse(ResponseEntity.notFound().build());	
 	}
 	
-	@GetMapping("/{materia}")
+	@GetMapping("/materia/{materia}")
 	ResponseEntity<List<Categoria>> categoriaPelaMateria(@PathVariable String materia){
 		return ResponseEntity.status(HttpStatus.OK).body(repository.findAllByMateriaContainingIgnoreCase(materia));
 	}
 	
-	@GetMapping("/{descricao}")
+	@GetMapping("/descricao/{descricao}")
 	ResponseEntity<List<Categoria>> categoriaPelaDescricao(@PathVariable String descricao){
 		return ResponseEntity.status(HttpStatus.OK).body(repository.findAllByDescricaoContainingIgnoreCase(descricao));
 	}
