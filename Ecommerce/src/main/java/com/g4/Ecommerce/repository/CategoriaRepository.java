@@ -8,7 +8,7 @@ import com.g4.Ecommerce.model.Categoria;
 
 public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
 	List<Categoria> findAllByMateriaContainingIgnoreCase (String materia); 
-		List<Categoria> findAllByDescricaoContainingIgnoreCase (String descricao);
+	List<Categoria> findAllByDescricaoContainingIgnoreCase (String descricao);
 
 
 }
