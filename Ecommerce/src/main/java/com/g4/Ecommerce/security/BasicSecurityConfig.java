@@ -20,7 +20,7 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity Http) throws Exception {
 		Http.authorizeRequests().antMatchers(HttpMethod.POST, "/cadastro").permitAll()
-		.antMatchers(HttpMethod., null)
+		.antMatchers(HttpMethod., null) //oi
 	}
 	
 }
