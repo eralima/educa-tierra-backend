@@ -28,6 +28,9 @@ public class Usuario {
 	@NotNull
 	@Email
 	private String email;
+	
+	@NotNull
+	private String usuario;
 
 	@NotNull
 	private String senha;
