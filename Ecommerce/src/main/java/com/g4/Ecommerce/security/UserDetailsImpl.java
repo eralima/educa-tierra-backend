@@ -7,7 +7,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.g4.Ecommerce.model.Usuario;
-import com.g4.Ecommerce.model.UsuarioLogin;
 
 public class UserDetailsImpl implements UserDetails {
 
@@ -19,7 +18,6 @@ public class UserDetailsImpl implements UserDetails {
 	private List<GrantedAuthority> authorities;
 	
 	 
-	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
