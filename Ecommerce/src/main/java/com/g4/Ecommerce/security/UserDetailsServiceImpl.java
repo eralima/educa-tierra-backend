@@ -1,4 +1,4 @@
-package com.g4.Ecommerce.service;
+package com.g4.Ecommerce.security;
 
 import java.util.Optional;
 
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.g4.Ecommerce.model.Usuario;
 import com.g4.Ecommerce.repository.UsuarioRepository;
-import com.g4.Ecommerce.security.UserDetailsImpl;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
