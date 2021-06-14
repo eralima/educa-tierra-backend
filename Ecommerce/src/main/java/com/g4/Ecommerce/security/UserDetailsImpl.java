@@ -22,6 +22,11 @@ public class UserDetailsImpl implements UserDetails {
 		super();
 		this.password = usuario.getSenha();
 		this.userName = usuario.getUsuario();
+					
+	}
+		
+	public UserDetailsImpl() {
+		
 	}
 
 	@Override
