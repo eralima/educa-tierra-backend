@@ -19,7 +19,7 @@ import com.g4.Ecommerce.model.Produto;
 import com.g4.Ecommerce.repository.ProdutoRepository;
 
 @RestController
-@RequestMapping("/produto")
+@RequestMapping("/produtos")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 
 public class ProdutoController {
