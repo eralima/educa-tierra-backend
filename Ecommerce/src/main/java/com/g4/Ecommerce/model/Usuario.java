@@ -39,8 +39,8 @@ public class Usuario {
 	@JsonIgnoreProperties
 	private List<Produto> produto;
 	
-	// @NotNull
-	// private String tipoUsuario; //se é prof ou aluno
+	/*@NotNull
+	private String tipoUsuario; //se é prof ou aluno*/
 
 	public long getId() {
 		return id;
@@ -90,12 +90,12 @@ public class Usuario {
 		this.produto = produto;
 	}
 
-	// public String getTipoUsuario() {
-	// return tipoUsuario;
-	// }
+	/* public String getTipoUsuario() {
+		return tipoUsuario;
+	}
 
-	// public void setTipoUsuario(String tipoUsuario) {
-	// this.tipoUsuario = tipoUsuario;
-	// }
+	public void setTipoUsuario(String tipoUsuario) {
+		this.tipoUsuario = tipoUsuario;
+	}*/
 
 }

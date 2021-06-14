@@ -1,5 +1,6 @@
 package com.g4.Ecommerce.model;
 
+/**/
 public class UsuarioLogin {
 
 	private String nome;
