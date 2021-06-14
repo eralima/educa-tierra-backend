@@ -38,7 +38,7 @@ public class Usuario {
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
 	@JsonIgnoreProperties
 	private List<Produto> produto;
-
+	
 	// @NotNull
 	// private String tipoUsuario; //se é prof ou aluno
 
@@ -66,6 +66,14 @@ public class Usuario {
 		this.email = email;
 	}
 
+	public String getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+
 	public String getSenha() {
 		return senha;
 	}
@@ -73,14 +81,6 @@ public class Usuario {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-
-	// public String getTipoUsuario() {
-	// return tipoUsuario;
-	// }
-
-	// public void setTipoUsuario(String tipoUsuario) {
-	// this.tipoUsuario = tipoUsuario;
-	// }
 
 	public List<Produto> getProduto() {
 		return produto;
@@ -90,4 +90,12 @@ public class Usuario {
 		this.produto = produto;
 	}
 
+	// public String getTipoUsuario() {
+	// return tipoUsuario;
+	// }
+
+	// public void setTipoUsuario(String tipoUsuario) {
+	// this.tipoUsuario = tipoUsuario;
+	// }
+	
 }
