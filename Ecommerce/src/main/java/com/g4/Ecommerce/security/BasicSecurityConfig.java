@@ -38,8 +38,8 @@ auth.userDetailsService(service);
 		
 	@Override
 	protected void configure(HttpSecurity Http) throws Exception {
-		Http.authorizeRequests().antMatchers(HttpMethod.POST, "/cadastro").permitAll()
-		.antMatchers(HttpMethod.POST, "/login").permitAll() 
+		Http.authorizeRequests().antMatchers(HttpMethod.POST, "/usuario/cadastro").permitAll()
+		.antMatchers(HttpMethod.POST, "/usuario/login").permitAll() 
 		.anyRequest().authenticated()
 		.and().httpBasic()
 		.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
