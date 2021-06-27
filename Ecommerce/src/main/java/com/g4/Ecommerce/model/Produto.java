@@ -14,10 +14,6 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-//import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-//import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 @Entity
 @Table(name = "tb_produto")
 public class Produto {
@@ -33,8 +29,11 @@ public class Produto {
 	private String descricao;
 
 	@NotNull
-	private String link; // para inserir imagem
-
+	private String linkImagem; 
+	
+	@NotNull
+	private String linkAcesso; 
+	
 	@ManyToOne
 	@JsonIgnoreProperties
 	private Categoria categoria;
@@ -43,9 +42,7 @@ public class Produto {
 	@JsonIgnoreProperties
 	private Usuario usuario;
 
-	/*
-	 * @NotNull private boolean statusTermo;
-	 */
+	@NotNull private boolean statusTermo;
 
 	public long getId() {
 		return id;
@@ -71,12 +68,20 @@ public class Produto {
 		this.descricao = descricao;
 	}
 
-	public String getLink() {
-		return link;
+	public String getLinkImagem() {
+		return linkImagem;
 	}
 
-	public void setLink(String link) {
-		this.link = link;
+	public void setLinkImagem(String linkImagem) {
+		this.linkImagem = linkImagem;
+	}
+
+	public String getLinkAcesso() {
+		return linkAcesso;
+	}
+
+	public void setLinkAcesso(String linkAcesso) {
+		this.linkAcesso = linkAcesso;
 	}
 
 	public Categoria getCategoria() {
@@ -95,4 +100,13 @@ public class Produto {
 		this.usuario = usuario;
 	}
 
+	public boolean isStatusTermo() {
+		return statusTermo;
+	}
+
+	public void setStatusTermo(boolean statusTermo) {
+		this.statusTermo = statusTermo;
+	}
+
+	
 }

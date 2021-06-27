@@ -8,30 +8,46 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.g4.Ecommerce.model.Categoria;
+import com.g4.Ecommerce.model.Produto;
 import com.g4.Ecommerce.model.Usuario;
 import com.g4.Ecommerce.model.UsuarioLogin;
+import com.g4.Ecommerce.repository.CategoriaRepository;
+import com.g4.Ecommerce.repository.ProdutoRepository;
 import com.g4.Ecommerce.repository.UsuarioRepository;
 
 @Service
 public class UsuarioService {
 	
 	@Autowired
-	private UsuarioRepository repository;
+	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private ProdutoRepository produtoRepository;
+	
+	@Autowired
+	private CategoriaRepository categoriaRepository;
 
-	public Usuario CadastrarUsuario(Usuario usuario) {
-		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+	public Usuario cadastrarUsuario(Usuario novoUsuario) {
+		Optional<Usuario> usuario = usuarioRepository.findByUsuario(novoUsuario.getUsuario());
+		
+		if(usuario.isPresent()) {
+			return null;
+		}
+		else {
+			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-		String senhaEncoder = encoder.encode(usuario.getSenha());
-		usuario.setSenha(senhaEncoder);
+			String senhaEncoder = encoder.encode(novoUsuario.getSenha());
+			novoUsuario.setSenha(senhaEncoder);
 
-		return repository.save(usuario);
+			return usuarioRepository.save(novoUsuario);	
+		}
 	}
 	
-	
-	public Optional<UsuarioLogin> Logar(Optional<UsuarioLogin> user) {
+	public Optional<UsuarioLogin> logar(Optional<UsuarioLogin> user) {
 
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		Optional<Usuario> usuario = repository.findByUsuario(user.get().getUsuario());
+		Optional<Usuario> usuario = usuarioRepository.findByUsuario(user.get().getUsuario());
 
 		if (usuario.isPresent()) {
 			if (encoder.matches(user.get().getSenha(), usuario.get().getSenha())) {
@@ -41,28 +57,43 @@ public class UsuarioService {
 				String authHeader = "Basic " + new String(encodedAuth);
 
 				user.get().setToken(authHeader);
-				user.get().setNome(usuario.get().getNomeCompleto());
 
 				return user;
-
 			}
 		}
 		return null;
 	}
-
 	
+	//cadastrar um novo produto
+	public Optional<Produto> cadastrarProduto (long categoriaId, long usuarioId, Produto produto){
+		Produto produtoCadastrado = produtoRepository.save(produto);
+		Optional<Categoria> categoria = categoriaRepository.findById(categoriaId);
+		Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
+		
+		if (categoria.isPresent() && usuario.isPresent()) {
+			produtoCadastrado.setCategoria(categoria.get());
+			produtoCadastrado.setUsuario(usuario.get());
+			return Optional.ofNullable(produtoRepository.save(produto));
+		} else {
+			return Optional.empty();
+		}
+	}
 	
+	//deletar um produto
+	public Usuario excluirProduto (long usuarioId, long produtoId){
+		Optional<Produto> produtoDeletado = produtoRepository.findById(produtoId);
+		Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
+		
+		if(produtoDeletado.isPresent() && usuario.isPresent()) {
+			produtoDeletado.get().setUsuario(null);
+			produtoRepository.save(produtoDeletado.get());
+			produtoRepository.deleteById(produtoDeletado.get().getId());
+			return usuarioRepository.findById(usuario.get().getId()).get();
+		}
+		else {
+			return null;
+		}
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
+	//salvar produtos na lista de favoritos
 }

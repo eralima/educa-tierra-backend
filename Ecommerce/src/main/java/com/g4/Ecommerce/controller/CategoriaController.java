@@ -51,17 +51,6 @@ public class CategoriaController {
 		return ResponseEntity.status(HttpStatus.OK).body(repository.findAllByDescricaoContainingIgnoreCase(descricao));
 	}
 
-	/*@PostMapping ("/materia")
-	ResponseEntity<Categoria> inserirCategoria(@RequestBody Categoria categoria) {
-		Optional<Categoria> categoriaInserida = service.inserirCategoria(categoria);
-		if (categoriaInserida.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-		}
-		else {
-			return ResponseEntity.status(HttpStatus.ACCEPTED).body(categoriaInserida.get());
-		}
-	}*/
-
 	@PutMapping
 	ResponseEntity<Categoria> alterarCategoria(@RequestBody Categoria categoria) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(categoria));

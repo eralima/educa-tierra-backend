@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,14 +35,13 @@ public class Usuario {
 
 	@NotNull
 	private String senha;
+	
+	//@NotNull private String tipoUsuario; 
 
-	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JsonIgnoreProperties
 	private List<Produto> produto;
 	
-	// @NotNull
-	// private String tipoUsuario; //se é prof ou aluno
-
 	public long getId() {
 		return id;
 	}
@@ -90,12 +90,12 @@ public class Usuario {
 		this.produto = produto;
 	}
 
-	// public String getTipoUsuario() {
-	// return tipoUsuario;
-	// }
+	/*public String getTipoUsuario() {
+		return tipoUsuario;
+	}
 
-	// public void setTipoUsuario(String tipoUsuario) {
-	// this.tipoUsuario = tipoUsuario;
-	// }
+	public void setTipoUsuario(String tipoUsuario) {
+		this.tipoUsuario = tipoUsuario;
+	}*/
 
 }
