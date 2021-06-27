@@ -31,7 +31,7 @@ public class Categoria {
 	private String descricao;
 
 	@OneToMany(mappedBy = "categoria", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JsonIgnoreProperties ("categoria")
+	@JsonIgnoreProperties ({"categoria", "usuario"})
 	private List<Produto> produto;
 
 	public long getId() {

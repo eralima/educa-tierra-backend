@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 //import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,7 +36,7 @@ public class CategoriaController {
 		return ResponseEntity.status(HttpStatus.OK).body(repository.findAll());
 	}
 
-	@GetMapping("/{id)")
+	@GetMapping("/{id}")
 	ResponseEntity<Categoria> categoriaPeloId(@PathVariable long id) {
 		return repository.findById(id).map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
 				.orElse(ResponseEntity.notFound().build());
@@ -50,7 +51,12 @@ public class CategoriaController {
 	ResponseEntity<List<Categoria>> categoriaPelaDescricao(@PathVariable String descricao) {
 		return ResponseEntity.status(HttpStatus.OK).body(repository.findAllByDescricaoContainingIgnoreCase(descricao));
 	}
-
+	
+	@PostMapping
+	ResponseEntity<Categoria> inserirCategoria(@RequestBody Categoria categoria){
+		return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(categoria));
+	}
+	
 	@PutMapping
 	ResponseEntity<Categoria> alterarCategoria(@RequestBody Categoria categoria) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(categoria));

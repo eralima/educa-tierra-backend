@@ -65,7 +65,7 @@ public class UsuarioService {
 	}
 	
 	//cadastrar um novo produto
-	public Optional<Produto> cadastrarProduto (long categoriaId, long usuarioId, Produto produto){
+	public Optional<Produto> cadastrarProduto (long usuarioId, long categoriaId, Produto produto){
 		Produto produtoCadastrado = produtoRepository.save(produto);
 		Optional<Categoria> categoria = categoriaRepository.findById(categoriaId);
 		Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);

@@ -39,8 +39,8 @@ public class UsuarioController {
 
 	//cadastro de produtos
 	@PostMapping("/cadastro-produto/usuario/{usuarioId}/categoria/{categoriaId}")
-	ResponseEntity<?> cadastrarProduto (@PathVariable long categoriaId, @PathVariable long usuarioId, @RequestBody Produto produtoNovo){
-		Optional<Produto> produtoCadastro = usuarioService.cadastrarProduto(categoriaId, usuarioId, produtoNovo);
+	ResponseEntity<?> cadastrarProduto (@PathVariable long usuarioId, @PathVariable long categoriaId, @RequestBody Produto produtoNovo){
+		Optional<Produto> produtoCadastro = usuarioService.cadastrarProduto(usuarioId, categoriaId, produtoNovo);
 		
 		if (!produtoCadastro.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(produtoCadastro.get());
