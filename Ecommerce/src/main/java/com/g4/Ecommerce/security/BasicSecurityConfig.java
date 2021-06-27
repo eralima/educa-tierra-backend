@@ -14,8 +14,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-
-
 @Configuration
 @EnableWebSecurity
 public class BasicSecurityConfig extends WebSecurityConfigurerAdapter { 
@@ -25,10 +23,10 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 	//ANOTACAO de DEPLOY para autenticar usuario "admin", sem precisar de cadastro=
 	@Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception{
-auth.inMemoryAuthentication()
-.withUser("admin").password(passwordEncoder().encode("admin")).authorities("ROLE_ADMIN");
+		/*auth.inMemoryAuthentication()
+		.withUser("admin").password(passwordEncoder().encode("admin")).authorities("ROLE_ADMIN");*/
 
-auth.userDetailsService(service);
+		auth.userDetailsService(service);
 	}
 	
 	@Bean
@@ -38,8 +36,8 @@ auth.userDetailsService(service);
 		
 	@Override
 	protected void configure(HttpSecurity Http) throws Exception {
-		Http.authorizeRequests().antMatchers(HttpMethod.POST, "/usuario/cadastro").permitAll()
-		.antMatchers(HttpMethod.POST, "/usuario/login").permitAll() 
+		Http.authorizeRequests().antMatchers(HttpMethod.POST, "/usuarios/cadastro").permitAll()
+		.antMatchers(HttpMethod.POST, "/usuarios/login").permitAll() 
 		.anyRequest().authenticated()
 		.and().httpBasic()
 		.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
