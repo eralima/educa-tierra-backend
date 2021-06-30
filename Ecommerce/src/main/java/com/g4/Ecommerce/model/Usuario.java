@@ -1,5 +1,6 @@
 package com.g4.Ecommerce.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -8,6 +9,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
@@ -36,11 +40,17 @@ public class Usuario {
 	@NotNull
 	private String senha;
 	
+	@ManyToMany (cascade = CascadeType.ALL)
+	@JoinTable (name = "tabelaFavorita", joinColumns = {@JoinColumn (name = "usuarioId")},
+	inverseJoinColumns = {@JoinColumn (name = "produtoId")})
+	
+	private List<Produto> meusFavoritos = new ArrayList<>();
+	
 	//@NotNull private String tipoUsuario; 
 
 	@OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JsonIgnoreProperties
-	private List<Produto> produto;
+	private List<Produto> produto = new ArrayList<>();
 	
 	public long getId() {
 		return id;
@@ -89,6 +99,21 @@ public class Usuario {
 	public void setProduto(List<Produto> produto) {
 		this.produto = produto;
 	}
+
+	public List<Produto> getMeusFavoritos() {
+		return meusFavoritos;
+	}
+
+	public void setMeusFavoritos(List<Produto> meusFavoritos) {
+		this.meusFavoritos = meusFavoritos;
+	}
+	
+	
+	
+	
+	
+	
+	
 
 	/*public String getTipoUsuario() {
 		return tipoUsuario;

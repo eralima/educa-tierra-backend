@@ -1,5 +1,8 @@
 package com.g4.Ecommerce.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 
 //import java.util.List;
@@ -11,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 //import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -47,6 +51,9 @@ public class Produto {
 	@JoinColumn(name = "usuario")
 	@JsonIgnoreProperties ({"produto", "senha"})
 	private Usuario usuario;
+	
+	@ManyToMany (mappedBy = "meusFavoritos")
+	private List<Usuario> favoritos = new ArrayList<>();
 
 	//@NotNull private boolean statusTermo;
 
@@ -105,6 +112,18 @@ public class Produto {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
+
+	public List<Usuario> getFavoritos() {
+		return favoritos;
+	}
+
+	public void setFavoritos(List<Usuario> favoritos) {
+		this.favoritos = favoritos;
+	}
+
+	
+	
+	
 
 	/*public boolean isStatusTermo() {
 		return statusTermo;
