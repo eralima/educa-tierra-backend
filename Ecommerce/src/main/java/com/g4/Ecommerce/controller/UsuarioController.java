@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,8 +34,14 @@ public class UsuarioController {
 	}
 	
 	@PostMapping("/cadastro")
-	public ResponseEntity<Usuario> cadastrarUsuario (@RequestBody Usuario usuario){
-		return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.cadastrarUsuario(usuario));
+	public ResponseEntity<?> cadastrarUsuario (@RequestBody Usuario usuario){
+		Usuario usuarioCadastro = usuarioService.cadastrarUsuario(usuario);
+		
+		if(usuarioCadastro == null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("usuario ja casdastrado");
+		}else{
+			return ResponseEntity.status(HttpStatus.CREATED).body(usuarioCadastro);
+		}
 	}
 
 	//cadastro de produtos
@@ -60,5 +67,13 @@ public class UsuarioController {
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body("Produto excluído");
 		}
 	}
-	
+	@PutMapping("/favoritos/{usuarioId}/{produtoId}")
+	ResponseEntity<?> salvarFavorito(@PathVariable long usuarioId, @PathVariable long produtoId){
+		 Usuario salvaFavorito = usuarioService.salvarFavoritos(produtoId, usuarioId);
+		 if(salvaFavorito == null) {
+			 return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Usuario ou produto n encontrado");
+		 }else {
+			 return ResponseEntity.status(HttpStatus.CREATED).body(salvaFavorito);
+		 }
+	}
 }

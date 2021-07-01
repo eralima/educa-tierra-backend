@@ -52,9 +52,10 @@ public class Produto {
 	@JsonIgnoreProperties ({"produto", "senha"})
 	private Usuario usuario;
 	
+	@JsonIgnoreProperties("meusFavoritos")
 	@ManyToMany (mappedBy = "meusFavoritos")
 	private List<Usuario> favoritos = new ArrayList<>();
-
+	
 	//@NotNull private boolean statusTermo;
 
 	public long getId() {
