@@ -96,4 +96,16 @@ public class UsuarioService {
 	}
 	
 	//salvar produtos na lista de favoritos
+	public Usuario salvarFavoritos (long produtoId, long usuarioId) {
+		Optional <Produto> produto = produtoRepository.findById(produtoId);
+		Optional <Usuario> usuario = usuarioRepository.findById(usuarioId);
+		if(produto.isPresent() && usuario.isPresent()) {
+			 usuario.get().getMeusFavoritos().add(produto.get());
+			return usuarioRepository.save(usuario.get());
+		}else {
+			
+			return null;
+		}
+	}
+	
 }

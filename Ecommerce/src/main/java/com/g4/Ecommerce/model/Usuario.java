@@ -44,6 +44,7 @@ public class Usuario {
 	@JoinTable (name = "tabelaFavorita", joinColumns = {@JoinColumn (name = "usuarioId")},
 	inverseJoinColumns = {@JoinColumn (name = "produtoId")})
 	
+	@JsonIgnoreProperties("favoritos")
 	private List<Produto> meusFavoritos = new ArrayList<>();
 	
 	//@NotNull private String tipoUsuario; 
