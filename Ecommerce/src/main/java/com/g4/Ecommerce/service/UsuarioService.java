@@ -57,6 +57,8 @@ public class UsuarioService {
 				String authHeader = "Basic " + new String(encodedAuth);
 
 				user.get().setToken(authHeader);
+				user.get().setNomeCompleto(usuario.get().getNomeCompleto());
+				user.get().setEmail(usuario.get().getEmail());
 
 				return user;
 			}
