@@ -40,6 +40,16 @@ public class Usuario {
 	@NotNull
 	private String senha;
 	
+	private String foto;
+	
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
+
 	@ManyToMany (cascade = CascadeType.ALL)
 	@JoinTable (name = "tabelaFavorita", joinColumns = {@JoinColumn (name = "usuarioId")},
 	inverseJoinColumns = {@JoinColumn (name = "produtoId")})
