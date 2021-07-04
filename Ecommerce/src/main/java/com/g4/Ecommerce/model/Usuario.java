@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,6 +20,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.g4.Ecommerce.model.util.TipoUsuario;
 
 @Entity
 @Table(name = "tb_usuario")
@@ -34,6 +37,10 @@ public class Usuario {
 	@Email
 	private String email;
 	
+	@NotNull(message = "O produto só pode ser do tipo ESTUDANTE, PROFESSOR ou OUTRO")
+	@Enumerated(EnumType.STRING)
+	private TipoUsuario tipoUsuario;
+	
 	@NotNull
 	private String usuario;
 
@@ -42,26 +49,17 @@ public class Usuario {
 	
 	private String foto;
 	
-	public String getFoto() {
-		return foto;
-	}
-
-	public void setFoto(String foto) {
-		this.foto = foto;
-	}
+	private int pontuacao;
 
 	@ManyToMany (cascade = CascadeType.ALL)
 	@JoinTable (name = "tabelaFavorita", joinColumns = {@JoinColumn (name = "usuarioId")},
 	inverseJoinColumns = {@JoinColumn (name = "produtoId")})
-	
-	@JsonIgnoreProperties("favoritos")
+	@JsonIgnoreProperties({"favoritadoPor", "senha", "usuario", "meusProdutos"})
 	private List<Produto> meusFavoritos = new ArrayList<>();
 	
-	//@NotNull private String tipoUsuario; 
-
 	@OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JsonIgnoreProperties
-	private List<Produto> produto = new ArrayList<>();
+	private List<Produto> meusProdutos = new ArrayList<>();
 	
 	public long getId() {
 		return id;
@@ -103,12 +101,13 @@ public class Usuario {
 		this.senha = senha;
 	}
 
-	public List<Produto> getProduto() {
-		return produto;
+	
+	public List<Produto> getMeusProdutos() {
+		return meusProdutos;
 	}
 
-	public void setProduto(List<Produto> produto) {
-		this.produto = produto;
+	public void setMeusProdutos(List<Produto> meusProdutos) {
+		this.meusProdutos = meusProdutos;
 	}
 
 	public List<Produto> getMeusFavoritos() {
@@ -119,19 +118,27 @@ public class Usuario {
 		this.meusFavoritos = meusFavoritos;
 	}
 	
-	
-	
-	
-	
-	
-	
+	public String getFoto() {
+		return foto;
+	}
 
-	/*public String getTipoUsuario() {
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
+
+	public int getPontuacao() {
+		return pontuacao;
+	}
+
+	public void setPontuacao(int pontuacao) {
+		this.pontuacao = pontuacao;
+	}
+
+	public TipoUsuario getTipoUsuario() {
 		return tipoUsuario;
 	}
 
-	public void setTipoUsuario(String tipoUsuario) {
+	public void setTipoUsuario(TipoUsuario tipoUsuario) {
 		this.tipoUsuario = tipoUsuario;
-	}*/
-
+	}
 }

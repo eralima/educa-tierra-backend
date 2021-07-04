@@ -19,14 +19,19 @@ import com.g4.Ecommerce.repository.UsuarioRepository;
 @Service
 public class UsuarioService {
 	
-	@Autowired
-	private UsuarioRepository usuarioRepository;
+	@Autowired private UsuarioRepository usuarioRepository;
 	
-	@Autowired
-	private ProdutoRepository produtoRepository;
+	@Autowired private ProdutoRepository produtoRepository;
 	
-	@Autowired
-	private CategoriaRepository categoriaRepository;
+	@Autowired private CategoriaRepository categoriaRepository;
+	
+	/**
+	 * Cadastra no banco de dados um novo usuario para acessar o sistema caso não exista, retornando um Optional com a entidade
+	 * @param 	novoUsuario uma entidade Usuario
+	 * @return 	Optional com Usuario se a entidade não existir no banco de dados, caso contrario null
+	 * @since 	1.0
+	 * @author 	EducaTierra 
+	 */
 
 	public Usuario cadastrarUsuario(Usuario novoUsuario) {
 		Optional<Usuario> usuario = usuarioRepository.findByUsuario(novoUsuario.getUsuario());
@@ -39,34 +44,69 @@ public class UsuarioService {
 
 			String senhaEncoder = encoder.encode(novoUsuario.getSenha());
 			novoUsuario.setSenha(senhaEncoder);
+			
+			//assim que o usuario cadastra ele já ganha 10 pontos
+			int pontuacao = 10;
+			novoUsuario.setPontuacao(pontuacao);
 
 			return usuarioRepository.save(novoUsuario);	
 		}
 	}
 	
-	public Optional<UsuarioLogin> logar(Optional<UsuarioLogin> user) {
+	
+	public Optional<UsuarioLogin> logar(Optional<UsuarioLogin> usuarioLogin) {
 
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		Optional<Usuario> usuario = usuarioRepository.findByUsuario(user.get().getUsuario());
+		Optional<Usuario> usuarioLogado = usuarioRepository.findByUsuario(usuarioLogin.get().getUsuario());
 
-		if (usuario.isPresent()) {
-			if (encoder.matches(user.get().getSenha(), usuario.get().getSenha())) {
+		if (usuarioLogado.isPresent()) {
+			if (encoder.matches(usuarioLogin.get().getSenha(), usuarioLogado.get().getSenha())) {
 
-				String auth = user.get().getUsuario() + ":" + user.get().getSenha();
+				String auth = usuarioLogin.get().getUsuario() + ":" + usuarioLogin.get().getSenha();
 				byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(Charset.forName("US-ASCII")));
 				String authHeader = "Basic " + new String(encodedAuth);
 
-				user.get().setToken(authHeader);
-				user.get().setNomeCompleto(usuario.get().getNomeCompleto());
-				user.get().setEmail(usuario.get().getEmail());
-
-				return user;
+				usuarioLogin.get().setToken(authHeader);
+				usuarioLogin.get().setNomeCompleto(usuarioLogado.get().getNomeCompleto());
+				usuarioLogin.get().setEmail(usuarioLogado.get().getEmail());
+				usuarioLogin.get().setFoto(usuarioLogado.get().getFoto());
+				
+				
+				return usuarioLogin;
 			}
 		}
 		return null;
 	}
 	
-	//cadastrar um novo produto
+	/**
+	 * Retorna do banco de dados usuario pelo id, retornando um Optional com a entidade 
+	 * @param 	usuarioId tipo long 
+	 * @return 	Optional com Usuario se os parametos estiverem devidamente escritos e existirem, ou Optional vazio (empty)
+	 * @since 	1.0
+	 * @author 	EducaTierra 
+	 */
+	
+	public Optional<Usuario> meusDados(long usuarioId){
+		Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
+		if (usuario.isPresent()) {
+			return usuario;
+		} else {
+			return Optional.empty();
+		}
+	}
+	
+	
+	/**
+	 * Registra no banco de dados um novo cadastro de produto e atualiza a pontuacao para um determinado usuario e retorna um 
+	 * Optional com uma entidade do Usuario
+	 * @param 	usuarioId tipo long
+	 * @param 	categoriaId tipo long
+	 * @param 	produto entidade do tipo Produto
+	 * @return 	Optional com Produto se os parametos estiverem devidamente escritos e existirem, ou Optional vazio (empty)
+	 * @since 	1.0
+	 * @author 	EducaTierra 
+	 */
+	
 	public Optional<Produto> cadastrarProduto (long usuarioId, long categoriaId, Produto produto){
 		Produto produtoCadastrado = produtoRepository.save(produto);
 		Optional<Categoria> categoria = categoriaRepository.findById(categoriaId);
@@ -75,13 +115,46 @@ public class UsuarioService {
 		if (categoria.isPresent() && usuario.isPresent()) {
 			produtoCadastrado.setCategoria(categoria.get());
 			produtoCadastrado.setUsuario(usuario.get());
+			
+			int novaPontuação = usuario.get().getPontuacao() + 10;
+			usuario.get().setPontuacao(novaPontuação);
+			
 			return Optional.ofNullable(produtoRepository.save(produto));
 		} else {
 			return Optional.empty();
 		}
 	}
 	
-	//deletar um produto
+	/**
+	 * Registra no banco de dados um produto a lista de favoritos de um determinado usuario e retorna uma entidade do Usuario 
+	 * @param 	produtoId tipo long
+	 * @param 	usuarioId tipo long
+	 * @return 	Usuario se os parametos estiverem devidamente escritos e existirem, ou null
+	 * @since 	1.0
+	 * @author 	EducaTierra 
+	 */
+	
+	public Usuario favoritarProduto (long produtoId, long usuarioId) {
+		Optional <Produto> produto = produtoRepository.findById(produtoId);
+		Optional <Usuario> usuario = usuarioRepository.findById(usuarioId);
+		if(produto.isPresent() && usuario.isPresent()) {
+			 usuario.get().getMeusFavoritos().add(produto.get());
+			return usuarioRepository.save(usuario.get());
+		}else {
+			
+			return null;
+		}
+	}
+	
+	/**
+	 * Deleta o registro de um produto no banco de dados de um determinado usuario e retorna uma entidade do Usuario 
+	 * @param 	usuarioId tipo long
+	 * @param 	produtoId tipo long
+	 * @return 	Usuario se os parametos estiverem devidamente escritos e existirem, ou null
+	 * @since 	1.0
+	 * @author 	EducaTierra 
+	 */
+	
 	public Usuario excluirProduto (long usuarioId, long produtoId){
 		Optional<Produto> produtoDeletado = produtoRepository.findById(produtoId);
 		Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
@@ -93,19 +166,6 @@ public class UsuarioService {
 			return usuarioRepository.findById(usuario.get().getId()).get();
 		}
 		else {
-			return null;
-		}
-	}
-	
-	//salvar produtos na lista de favoritos
-	public Usuario salvarFavoritos (long produtoId, long usuarioId) {
-		Optional <Produto> produto = produtoRepository.findById(produtoId);
-		Optional <Usuario> usuario = usuarioRepository.findById(usuarioId);
-		if(produto.isPresent() && usuario.isPresent()) {
-			 usuario.get().getMeusFavoritos().add(produto.get());
-			return usuarioRepository.save(usuario.get());
-		}else {
-			
 			return null;
 		}
 	}

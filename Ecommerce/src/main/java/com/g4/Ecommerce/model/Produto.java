@@ -9,6 +9,8 @@ import javax.persistence.CascadeType;
 
 //import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,11 +18,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-//import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.g4.Ecommerce.model.util.TipoProduto;
 
 @Entity
 @Table(name = "tb_produto")
@@ -42,19 +44,23 @@ public class Produto {
 	@NotNull
 	private String linkAcesso; 
 	
+	@NotNull(message = "O produto só pode ser do tipo EBOOK, COLEÇÃO, RESUMO ou VÍDEO")
+	@Enumerated(EnumType.STRING)
+	private TipoProduto tipoProduto;
+	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "categoria")
-	@JsonIgnoreProperties ({"produto"})
+	@JsonIgnoreProperties ({"meusProdutos", "senha", "meusFavoritos", "favoritadoPor", "produto"})
 	private Categoria categoria;
-
+	
 	@ManyToOne (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "usuario")
-	@JsonIgnoreProperties ({"produto", "senha"})
+	@JsonIgnoreProperties ({"meusProdutos", "senha", "meusFavoritos", "favoritadoPor"})
 	private Usuario usuario;
 	
-	@JsonIgnoreProperties("meusFavoritos")
+	@JsonIgnoreProperties({"meusFavoritos", "meusProdutos", "senha"})
 	@ManyToMany (mappedBy = "meusFavoritos")
-	private List<Usuario> favoritos = new ArrayList<>();
+	private List<Usuario> favoritadoPor = new ArrayList<>();
 	
 	//@NotNull private boolean statusTermo;
 
@@ -114,18 +120,23 @@ public class Produto {
 		this.usuario = usuario;
 	}
 
-	public List<Usuario> getFavoritos() {
-		return favoritos;
+	public List<Usuario> getFavoritadoPor() {
+		return favoritadoPor;
 	}
 
-	public void setFavoritos(List<Usuario> favoritos) {
-		this.favoritos = favoritos;
+	public void setFavoritadoPor(List<Usuario> favoritadoPor) {
+		this.favoritadoPor = favoritadoPor;
+	}
+
+	public TipoProduto getTipoProduto() {
+		return tipoProduto;
+	}
+
+	public void setTipoProduto(TipoProduto tipoProduto) {
+		this.tipoProduto = tipoProduto;
 	}
 
 	
-	
-	
-
 	/*public boolean isStatusTermo() {
 		return statusTermo;
 	}

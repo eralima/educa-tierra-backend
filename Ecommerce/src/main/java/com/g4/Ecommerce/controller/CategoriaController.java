@@ -28,8 +28,6 @@ public class CategoriaController {
 	@Autowired
 	private CategoriaRepository repository;
 
-	/*@Autowired
-	private CategoriaService service; */
 
 	@GetMapping
 	ResponseEntity<List<Categoria>> todasCategorias() {

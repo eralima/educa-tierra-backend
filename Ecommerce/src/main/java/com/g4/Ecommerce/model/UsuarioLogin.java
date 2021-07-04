@@ -1,13 +1,13 @@
 package com.g4.Ecommerce.model;
 
 
-
 public class UsuarioLogin {
 
-	
 	private String nomeCompleto;
 		
 	private String email;
+	
+	private String foto;
 		
 	private String usuario;
 	
@@ -54,6 +54,14 @@ public class UsuarioLogin {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
 	}
 	
 	
