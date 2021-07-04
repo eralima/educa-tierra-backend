@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,22 +29,35 @@ public class UsuarioController {
 	private UsuarioService usuarioService;
 
 	@PostMapping("/login")
-	public ResponseEntity<UsuarioLogin> logar (@RequestBody Optional<UsuarioLogin> user){
+	ResponseEntity<UsuarioLogin> logar (@RequestBody Optional<UsuarioLogin> user){
 		return usuarioService.logar(user).map(resposta -> ResponseEntity.ok(resposta))
 				.orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
 	}
 	
 	@PostMapping("/cadastro")
-	public ResponseEntity<?> cadastrarUsuario (@RequestBody Usuario usuario){
+	ResponseEntity<?> cadastrarUsuario (@RequestBody Usuario usuario){
 		Usuario usuarioCadastro = usuarioService.cadastrarUsuario(usuario);
 		
 		if(usuarioCadastro == null) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("usuario ja casdastrado");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário já cadastrado");
 		}else{
 			return ResponseEntity.status(HttpStatus.CREATED).body(usuarioCadastro);
 		}
 	}
 
+	//método para pegar todos os produtos cadastrados do usuario	
+		@GetMapping("/{usuarioId}")
+		ResponseEntity<?> meusDados (@PathVariable long usuarioId){
+			Optional<Usuario> usuario = usuarioService.meusDados(usuarioId);
+			if (!usuario.isEmpty()) {
+				return ResponseEntity.status(HttpStatus.ACCEPTED).body(usuario.get());
+			} else {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário inexistente");
+			}
+			
+		}
+	
+		
 	//cadastro de produtos
 	@PostMapping("/cadastro-produto/usuario/{usuarioId}/categoria/{categoriaId}")
 	ResponseEntity<?> cadastrarProduto (@PathVariable long usuarioId, @PathVariable long categoriaId, @RequestBody Produto produtoNovo){
@@ -61,17 +75,19 @@ public class UsuarioController {
 	ResponseEntity<String> excluirProduto(@PathVariable long usuarioId, @PathVariable long produtoId){
 		Usuario retorno = usuarioService.excluirProduto(usuarioId, produtoId);
 		if(retorno == null) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário ou produto não encontrado");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário ou produto não encontrados");
 		}
 		else {
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body("Produto excluído");
 		}
 	}
-	@PutMapping("/favoritos/{usuarioId}/{produtoId}")
+	
+	
+	@PutMapping("/favoritos/usuario/{usuarioId}/produto/{produtoId}")
 	ResponseEntity<?> salvarFavorito(@PathVariable long usuarioId, @PathVariable long produtoId){
-		 Usuario salvaFavorito = usuarioService.salvarFavoritos(produtoId, usuarioId);
+		 Usuario salvaFavorito = usuarioService.favoritarProduto(produtoId, usuarioId);
 		 if(salvaFavorito == null) {
-			 return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Usuario ou produto n encontrado");
+			 return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Usuario ou produto não encontrados");
 		 }else {
 			 return ResponseEntity.status(HttpStatus.CREATED).body(salvaFavorito);
 		 }
