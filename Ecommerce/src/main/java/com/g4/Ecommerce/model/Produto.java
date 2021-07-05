@@ -62,7 +62,7 @@ public class Produto {
 	@ManyToMany (mappedBy = "meusFavoritos")
 	private List<Usuario> favoritadoPor = new ArrayList<>();
 	
-	//@NotNull private boolean statusTermo;
+	@NotNull private boolean statusTermo;
 
 	public long getId() {
 		return id;
@@ -137,13 +137,13 @@ public class Produto {
 	}
 
 	
-	/*public boolean isStatusTermo() {
+	public boolean isStatusTermo() {
 		return statusTermo;
 	}
 
 	public void setStatusTermo(boolean statusTermo) {
 		this.statusTermo = statusTermo;
-	}*/
+	}
 
 	
 }
