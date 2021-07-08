@@ -16,6 +16,8 @@ public class UsuarioLogin {
 	private String senha;
 	
 	private String token;
+	
+	private boolean adminUsuario;
 
 	
 	public String getNomeCompleto() {
@@ -75,8 +77,11 @@ public class UsuarioLogin {
 		this.id = id;
 	}
 	
-	
-	
-	
-	
+	public boolean isAdminUsuario() {
+		return adminUsuario;
+	}
+
+	public void setAdminUsuario(boolean adminUsuario) {
+		this.adminUsuario = adminUsuario;
+	}
 }

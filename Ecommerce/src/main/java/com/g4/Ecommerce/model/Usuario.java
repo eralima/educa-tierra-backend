@@ -51,7 +51,7 @@ public class Usuario {
 	
 	private int pontuacao;
 	
-	private String papelUsuario;
+	private boolean adminUsuario;
 
 	@ManyToMany (cascade = CascadeType.ALL)
 	@JoinTable (name = "tabelaFavorita", joinColumns = {@JoinColumn (name = "usuarioId")},
@@ -63,6 +63,7 @@ public class Usuario {
 	@JsonIgnoreProperties
 	private List<Produto> meusProdutos = new ArrayList<>();
 	
+		
 	public long getId() {
 		return id;
 	}
@@ -144,19 +145,11 @@ public class Usuario {
 		this.tipoUsuario = tipoUsuario;
 	}
 
-	public String getPapelUsuario() {
-		return papelUsuario;
+	public boolean isAdminUsuario() {
+		return adminUsuario;
 	}
 
-	public void setPapelUsuario(String papelUsuario) {
-		this.papelUsuario = papelUsuario;
+	public void setAdminUsuario(boolean adminUsuario) {
+		this.adminUsuario = adminUsuario;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 }

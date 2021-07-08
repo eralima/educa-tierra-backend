@@ -18,42 +18,53 @@ import com.g4.Ecommerce.repository.UsuarioRepository;
 
 @Service
 public class UsuarioService {
-	
-	@Autowired private UsuarioRepository usuarioRepository;
-	
-	@Autowired private ProdutoRepository produtoRepository;
-	
-	@Autowired private CategoriaRepository categoriaRepository;
-	
+
+	@Autowired
+	private UsuarioRepository usuarioRepository;
+
+	@Autowired
+	private ProdutoRepository produtoRepository;
+
+	@Autowired
+	private CategoriaRepository categoriaRepository;
+
 	/**
-	 * Cadastra no banco de dados um novo usuario para acessar o sistema caso não exista, retornando um Optional com a entidade
-	 * @param 	novoUsuario uma entidade Usuario
-	 * @return 	Optional com Usuario se a entidade não existir no banco de dados, caso contrario null
-	 * @since 	1.0
-	 * @author 	EducaTierra 
+	 * Cadastra no banco de dados um novo usuario para acessar o sistema caso não
+	 * exista, retornando um Optional com a entidade
+	 * 
+	 * @param novoUsuario uma entidade Usuario
+	 * @return Optional com Usuario se a entidade não existir no banco de dados,
+	 *         caso contrario null
+	 * @since 1.0
+	 * @author EducaTierra
 	 */
 
 	public Usuario cadastrarUsuario(Usuario novoUsuario) {
 		Optional<Usuario> usuario = usuarioRepository.findByUsuario(novoUsuario.getUsuario());
-		
-		if(usuario.isPresent()) {
+
+		if (usuario.isPresent()) {
 			return null;
-		}
-		else {
+		} else {			
+			if (novoUsuario.getEmail().equals("contato.educa.tierra@gmail.com")) {
+				novoUsuario.setAdminUsuario(true);
+			} else {
+				novoUsuario.setAdminUsuario(false);
+			}
+
 			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
 			String senhaEncoder = encoder.encode(novoUsuario.getSenha());
 			novoUsuario.setSenha(senhaEncoder);
-			
-			//assim que o usuario cadastra ele já ganha 10 pontos
+
+			// assim que o usuario cadastra ele já ganha 10 pontos
 			int pontuacao = 10;
 			novoUsuario.setPontuacao(pontuacao);
 
-			return usuarioRepository.save(novoUsuario);	
+			return usuarioRepository.save(novoUsuario);
 		}
+
 	}
-	
-	
+
 	public Optional<UsuarioLogin> logar(Optional<UsuarioLogin> usuarioLogin) {
 
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -71,24 +82,25 @@ public class UsuarioService {
 				usuarioLogin.get().setEmail(usuarioLogado.get().getEmail());
 				usuarioLogin.get().setFoto(usuarioLogado.get().getFoto());
 				usuarioLogin.get().setId(usuarioLogado.get().getId());
-				
-				
-				
+        
 				return usuarioLogin;
 			}
 		}
 		return null;
 	}
-	
+
 	/**
-	 * Retorna do banco de dados usuario pelo id, retornando um Optional com a entidade 
-	 * @param 	usuarioId tipo long 
-	 * @return 	Optional com Usuario se os parametos estiverem devidamente escritos e existirem, ou Optional vazio (empty)
-	 * @since 	1.0
-	 * @author 	EducaTierra 
+	 * Retorna do banco de dados usuario pelo id, retornando um Optional com a
+	 * entidade
+	 * 
+	 * @param usuarioId tipo long
+	 * @return Optional com Usuario se os parametos estiverem devidamente escritos e
+	 *         existirem, ou Optional vazio (empty)
+	 * @since 1.0
+	 * @author EducaTierra
 	 */
-	
-	public Optional<Usuario> meusDados(long usuarioId){
+
+	public Optional<Usuario> meusDados(long usuarioId) {
 		Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
 		if (usuario.isPresent()) {
 			return usuario;
@@ -96,83 +108,88 @@ public class UsuarioService {
 			return Optional.empty();
 		}
 	}
-	
-	
+
 	/**
-	 * Registra no banco de dados um novo cadastro de produto e atualiza a pontuacao para um determinado usuario e retorna um 
-	 * Optional com uma entidade do Usuario
-	 * @param 	usuarioId tipo long
-	 * @param 	categoriaId tipo long
-	 * @param 	produto entidade do tipo Produto
-	 * @return 	Optional com Produto se os parametos estiverem devidamente escritos e existirem, ou Optional vazio (empty)
-	 * @since 	1.0
-	 * @author 	EducaTierra 
+	 * Registra no banco de dados um novo cadastro de produto e atualiza a pontuacao
+	 * para um determinado usuario e retorna um Optional com uma entidade do Usuario
+	 * 
+	 * @param usuarioId   tipo long
+	 * @param categoriaId tipo long
+	 * @param produto     entidade do tipo Produto
+	 * @return Optional com Produto se os parametos estiverem devidamente escritos e
+	 *         existirem, ou Optional vazio (empty)
+	 * @since 1.0
+	 * @author EducaTierra
 	 */
-	
-	public Optional<Produto> cadastrarProduto (long usuarioId, long categoriaId, Produto produto){
+
+	public Optional<Produto> cadastrarProduto(long usuarioId, long categoriaId, Produto produto) {
 		Produto produtoCadastrado = produtoRepository.save(produto);
 		Optional<Categoria> categoria = categoriaRepository.findById(categoriaId);
 		Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
-		
+
 		if (categoria.isPresent() && usuario.isPresent()) {
 			produtoCadastrado.setCategoria(categoria.get());
 			produtoCadastrado.setUsuario(usuario.get());
-			
+
 			int novaPontuação = usuario.get().getPontuacao() + 10;
 			usuario.get().setPontuacao(novaPontuação);
-			
+
 			return Optional.ofNullable(produtoRepository.save(produto));
 		} else {
 			return Optional.empty();
 		}
 	}
-	
+
 	/**
-	 * Registra no banco de dados um produto a lista de favoritos de um determinado usuario e retorna uma entidade do Usuario 
-	 * @param 	produtoId tipo long
-	 * @param 	usuarioId tipo long
-	 * @return 	Usuario se os parametos estiverem devidamente escritos e existirem, ou null
-	 * @since 	1.0
-	 * @author 	EducaTierra 
+	 * Registra no banco de dados um produto a lista de favoritos de um determinado
+	 * usuario e retorna uma entidade do Usuario
+	 * 
+	 * @param produtoId tipo long
+	 * @param usuarioId tipo long
+	 * @return Usuario se os parametos estiverem devidamente escritos e existirem,
+	 *         ou null
+	 * @since 1.0
+	 * @author EducaTierra
 	 */
-	
-	public Usuario favoritarProduto (long produtoId, long usuarioId) {
-		Optional <Produto> produto = produtoRepository.findById(produtoId);
-		Optional <Usuario> usuario = usuarioRepository.findById(usuarioId);
-		if(produto.isPresent() && usuario.isPresent()) {
-			 usuario.get().getMeusFavoritos().add(produto.get());
+
+	public Usuario favoritarProduto(long produtoId, long usuarioId) {
+		Optional<Produto> produto = produtoRepository.findById(produtoId);
+		Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
+		if (produto.isPresent() && usuario.isPresent()) {
+			usuario.get().getMeusFavoritos().add(produto.get());
 			return usuarioRepository.save(usuario.get());
-		}else {
-			
+		} else {
+
 			return null;
 		}
 	}
-	
+
 	/**
-	 * Deleta o registro de um produto no banco de dados de um determinado usuario e retorna uma entidade do Usuario 
-	 * @param 	usuarioId tipo long
-	 * @param 	produtoId tipo long
-	 * @return 	Usuario se os parametos estiverem devidamente escritos e existirem, ou null
-	 * @since 	1.0
-	 * @author 	EducaTierra 
+	 * Deleta o registro de um produto no banco de dados de um determinado usuario e
+	 * retorna uma entidade do Usuario
+	 * 
+	 * @param usuarioId tipo long
+	 * @param produtoId tipo long
+	 * @return Usuario se os parametos estiverem devidamente escritos e existirem,
+	 *         ou null
+	 * @since 1.0
+	 * @author EducaTierra
 	 */
-	
-	public Usuario excluirProduto (long usuarioId, long produtoId){
+
+	public Usuario excluirProduto(long usuarioId, long produtoId) {
 		Optional<Produto> produtoDeletado = produtoRepository.findById(produtoId);
 		Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
-		
-		if(produtoDeletado.isPresent() && usuario.isPresent()) {
+
+		if (produtoDeletado.isPresent() && usuario.isPresent()) {
 			produtoDeletado.get().setUsuario(null);
 			produtoRepository.save(produtoDeletado.get());
 			produtoRepository.deleteById(produtoDeletado.get().getId());
 			return usuarioRepository.findById(usuario.get().getId()).get();
-		}
-		else {
+		} else {
 			return null;
 		}
 	}
-	
-	
+
 	public Optional<Produto> alterarProduto(long usuarioId, long categoriaId, Produto produto) {
         Produto produtoAlterado = produtoRepository.save(produto);
         Optional<Categoria> categoria = categoriaRepository.findById(categoriaId);
@@ -187,6 +204,5 @@ public class UsuarioService {
             return Optional.empty();
         }
     }
-	
-	
+
 }
