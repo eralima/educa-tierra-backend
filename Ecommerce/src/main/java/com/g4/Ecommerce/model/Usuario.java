@@ -37,7 +37,7 @@ public class Usuario {
 	@Email
 	private String email;
 	
-	@NotNull(message = "O produto só pode ser do tipo ESTUDANTE, PROFESSOR ou OUTRO")
+	//@NotNull(message = "O produto só pode ser do tipo ESTUDANTE, PROFESSOR ou OUTRO")
 	@Enumerated(EnumType.STRING)
 	private TipoUsuario tipoUsuario;
 	
@@ -152,6 +152,4 @@ public class Usuario {
 	public void setAdminUsuario(boolean adminUsuario) {
 		this.adminUsuario = adminUsuario;
 	}
-
-						
 }

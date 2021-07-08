@@ -59,7 +59,7 @@ public class UsuarioController {
 	
 		
 	//cadastro de produtos
-	@PostMapping("/cadastro-produto/usuario/{usuarioId}/categoria/{categoriaId}")
+	@PostMapping("/cadastro-produto/{usuarioId}/{categoriaId}")
 	ResponseEntity<?> cadastrarProduto (@PathVariable long usuarioId, @PathVariable long categoriaId, @RequestBody Produto produtoNovo){
 		Optional<Produto> produtoCadastro = usuarioService.cadastrarProduto(usuarioId, categoriaId, produtoNovo);
 		
@@ -71,7 +71,7 @@ public class UsuarioController {
 	} 
 	
 	//excluir produto
-	@DeleteMapping("/exclusao-produto/usuario/{usuarioId}/produto/{produtoId}")
+	@DeleteMapping("/exclusao-produto/{usuarioId}/{produtoId}")
 	ResponseEntity<String> excluirProduto(@PathVariable long usuarioId, @PathVariable long produtoId){
 		Usuario retorno = usuarioService.excluirProduto(usuarioId, produtoId);
 		if(retorno == null) {
@@ -92,4 +92,17 @@ public class UsuarioController {
 			 return ResponseEntity.status(HttpStatus.CREATED).body(salvaFavorito);
 		 }
 	}
+	
+	@PutMapping("/altera-produto/{usuarioId}/{categoriaId}")
+    ResponseEntity<?> alterarProduto(@PathVariable long usuarioId, @PathVariable long categoriaId, @RequestBody Produto produto){
+         Optional<Produto> alterarProduto = usuarioService.alterarProduto(usuarioId, categoriaId, produto);
+         if(!alterarProduto.isEmpty()) {
+             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Usuario ou produto não encontrados");
+         }else {
+             return ResponseEntity.status(HttpStatus.CREATED).body(alterarProduto.get());
+         }
+    }
+	
+	
+	
 }

@@ -44,7 +44,7 @@ public class Produto {
 	@NotNull
 	private String linkAcesso; 
 	
-	@NotNull(message = "O produto só pode ser do tipo EBOOK, COLEÇÃO, RESUMO ou VÍDEO")
+	//@NotNull(message = "O produto só pode ser do tipo EBOOK, COLEÇÃO, RESUMO ou VÍDEO")
 	@Enumerated(EnumType.STRING)
 	private TipoProduto tipoProduto;
 	

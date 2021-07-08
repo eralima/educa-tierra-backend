@@ -2,6 +2,8 @@ package com.g4.Ecommerce.model;
 
 
 public class UsuarioLogin {
+	
+	private long id;
 
 	private String nomeCompleto;
 		
@@ -64,8 +66,17 @@ public class UsuarioLogin {
 
 	public void setFoto(String foto) {
 		this.foto = foto;
+		
 	}
 
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+	
 	public boolean isAdminUsuario() {
 		return adminUsuario;
 	}
@@ -73,5 +84,4 @@ public class UsuarioLogin {
 	public void setAdminUsuario(boolean adminUsuario) {
 		this.adminUsuario = adminUsuario;
 	}
-		
 }

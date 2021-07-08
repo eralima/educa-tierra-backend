@@ -81,7 +81,8 @@ public class UsuarioService {
 				usuarioLogin.get().setNomeCompleto(usuarioLogado.get().getNomeCompleto());
 				usuarioLogin.get().setEmail(usuarioLogado.get().getEmail());
 				usuarioLogin.get().setFoto(usuarioLogado.get().getFoto());
-
+				usuarioLogin.get().setId(usuarioLogado.get().getId());
+        
 				return usuarioLogin;
 			}
 		}
@@ -188,5 +189,20 @@ public class UsuarioService {
 			return null;
 		}
 	}
+
+	public Optional<Produto> alterarProduto(long usuarioId, long categoriaId, Produto produto) {
+        Produto produtoAlterado = produtoRepository.save(produto);
+        Optional<Categoria> categoria = categoriaRepository.findById(categoriaId);
+        Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
+
+        if (categoria.isPresent() && usuario.isPresent()) {
+            produtoAlterado.setCategoria(categoria.get());
+            produtoAlterado.setUsuario(usuario.get());
+
+            return Optional.ofNullable(produtoRepository.save(produtoAlterado));
+        } else {
+            return Optional.empty();
+        }
+    }
 
 }
