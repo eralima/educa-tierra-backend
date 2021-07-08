@@ -37,7 +37,7 @@ public class Usuario {
 	@Email
 	private String email;
 	
-	@NotNull(message = "O produto só pode ser do tipo ESTUDANTE, PROFESSOR ou OUTRO")
+	//@NotNull(message = "O produto só pode ser do tipo ESTUDANTE, PROFESSOR ou OUTRO")
 	@Enumerated(EnumType.STRING)
 	private TipoUsuario tipoUsuario;
 	
@@ -50,6 +50,8 @@ public class Usuario {
 	private String foto;
 	
 	private int pontuacao;
+	
+	private String papelUsuario;
 
 	@ManyToMany (cascade = CascadeType.ALL)
 	@JoinTable (name = "tabelaFavorita", joinColumns = {@JoinColumn (name = "usuarioId")},
@@ -141,4 +143,20 @@ public class Usuario {
 	public void setTipoUsuario(TipoUsuario tipoUsuario) {
 		this.tipoUsuario = tipoUsuario;
 	}
+
+	public String getPapelUsuario() {
+		return papelUsuario;
+	}
+
+	public void setPapelUsuario(String papelUsuario) {
+		this.papelUsuario = papelUsuario;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 }
