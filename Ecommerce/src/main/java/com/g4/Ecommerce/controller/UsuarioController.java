@@ -27,7 +27,17 @@ public class UsuarioController {
 
 	@Autowired
 	private UsuarioService usuarioService;
-
+	
+	@GetMapping("/{id}")
+ResponseEntity<Usuario> getUsuarioById (@PathVariable long id){
+		Optional<Usuario> usuario = usuarioService.meusDados(id);
+		if(!usuario.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		} else {
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(usuario.get());
+		}
+	}
+		
 	@PostMapping("/login")
 	ResponseEntity<UsuarioLogin> logar (@RequestBody Optional<UsuarioLogin> user){
 		return usuarioService.logar(user).map(resposta -> ResponseEntity.ok(resposta))
