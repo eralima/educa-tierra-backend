@@ -103,13 +103,13 @@ ResponseEntity<Usuario> getUsuarioById (@PathVariable long id){
 		 }
 	}
 	
-	@PutMapping("/altera-produto/{usuarioId}/{categoriaId}")
-    ResponseEntity<?> alterarProduto(@PathVariable long usuarioId, @PathVariable long categoriaId, @RequestBody Produto produto){
-         Optional<Produto> alterarProduto = usuarioService.alterarProduto(usuarioId, categoriaId, produto);
+	@PutMapping("/altera-produto/{produtoId}/{categoriaId}")
+    ResponseEntity<?> alterarProduto(@PathVariable long produtoId, @PathVariable long categoriaId, @RequestBody Produto produto){
+         Optional<Produto> alterarProduto = usuarioService.alterarProduto(produtoId, categoriaId, produto);
          if(!alterarProduto.isEmpty()) {
-             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Usuario ou produto não encontrados");
-         }else {
              return ResponseEntity.status(HttpStatus.CREATED).body(alterarProduto.get());
+         }else {
+        	 return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Produto não encontrados");
          }
     }
 	
