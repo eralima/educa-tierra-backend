@@ -82,6 +82,7 @@ public class UsuarioService {
 				usuarioLogin.get().setEmail(usuarioLogado.get().getEmail());
 				usuarioLogin.get().setFoto(usuarioLogado.get().getFoto());
 				usuarioLogin.get().setId(usuarioLogado.get().getId());
+				usuarioLogin.get().setPontuacao(usuarioLogado.get().getPontuacao());
         
 				return usuarioLogin;
 			}
@@ -140,6 +141,52 @@ public class UsuarioService {
 		}
 	}
 
+
+	/**
+	 * Deleta o registro de um produto no banco de dados de um determinado usuario e
+	 * retorna uma entidade do Usuario
+	 * 
+	 * @param usuarioId tipo long
+	 * @param produtoId tipo long
+	 * @return Usuario se os parametos estiverem devidamente escritos e existirem,
+	 *         ou null
+	 * @since 1.0
+	 * @author EducaTierra
+	 */
+
+	public Optional<Produto> alterarProduto(long produtoId, long categoriaId, Produto produto) {
+		Optional<Produto> produtoParaAlterar = produtoRepository.findById(produtoId);
+		Optional<Categoria> novaCategoria = categoriaRepository.findById(categoriaId);
+		
+        if (produtoParaAlterar.isPresent()) {
+        	produtoParaAlterar.get().setCategoria(null);
+        	produtoParaAlterar.get().setCategoria(novaCategoria.get());
+        	produtoParaAlterar.get().setNome(produto.getNome());
+        	produtoParaAlterar.get().setDescricao(produto.getDescricao());
+        	produtoParaAlterar.get().setLinkAcesso(produto.getLinkAcesso());
+        	produtoParaAlterar.get().setLinkImagem(produto.getLinkImagem());
+        	produtoParaAlterar.get().setTipoProduto(produto.getTipoProduto());
+        
+            return Optional.ofNullable(produtoRepository.save(produtoParaAlterar.get()));
+        } else {
+            return Optional.empty();
+        }
+    }
+	
+	public Usuario excluirProduto(long usuarioId, long produtoId) {
+		Optional<Produto> produtoDeletado = produtoRepository.findById(produtoId);
+		Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
+
+		if (produtoDeletado.isPresent() && usuario.isPresent()) {
+			produtoDeletado.get().setUsuario(null);
+			produtoRepository.save(produtoDeletado.get());
+			produtoRepository.deleteById(produtoDeletado.get().getId());
+			return usuarioRepository.findById(usuario.get().getId()).get();
+		} else {
+			return null;
+		}
+	}
+	
 	/**
 	 * Registra no banco de dados um produto a lista de favoritos de um determinado
 	 * usuario e retorna uma entidade do Usuario
@@ -163,46 +210,5 @@ public class UsuarioService {
 			return null;
 		}
 	}
-
-	/**
-	 * Deleta o registro de um produto no banco de dados de um determinado usuario e
-	 * retorna uma entidade do Usuario
-	 * 
-	 * @param usuarioId tipo long
-	 * @param produtoId tipo long
-	 * @return Usuario se os parametos estiverem devidamente escritos e existirem,
-	 *         ou null
-	 * @since 1.0
-	 * @author EducaTierra
-	 */
-
-	public Usuario excluirProduto(long usuarioId, long produtoId) {
-		Optional<Produto> produtoDeletado = produtoRepository.findById(produtoId);
-		Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
-
-		if (produtoDeletado.isPresent() && usuario.isPresent()) {
-			produtoDeletado.get().setUsuario(null);
-			produtoRepository.save(produtoDeletado.get());
-			produtoRepository.deleteById(produtoDeletado.get().getId());
-			return usuarioRepository.findById(usuario.get().getId()).get();
-		} else {
-			return null;
-		}
-	}
-
-	public Optional<Produto> alterarProduto(long usuarioId, long categoriaId, Produto produto) {
-        Produto produtoAlterado = produtoRepository.save(produto);
-        Optional<Categoria> categoria = categoriaRepository.findById(categoriaId);
-        Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
-
-        if (categoria.isPresent() && usuario.isPresent()) {
-            produtoAlterado.setCategoria(categoria.get());
-            produtoAlterado.setUsuario(usuario.get());
-
-            return Optional.ofNullable(produtoRepository.save(produtoAlterado));
-        } else {
-            return Optional.empty();
-        }
-    }
 
 }

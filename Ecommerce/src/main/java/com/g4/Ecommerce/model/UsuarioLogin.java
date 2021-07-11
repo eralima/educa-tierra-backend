@@ -18,7 +18,9 @@ public class UsuarioLogin {
 	private String token;
 	
 	private boolean adminUsuario;
-
+	
+	private int pontuacao;
+	
 	
 	public String getNomeCompleto() {
 		return nomeCompleto;
@@ -84,4 +86,14 @@ public class UsuarioLogin {
 	public void setAdminUsuario(boolean adminUsuario) {
 		this.adminUsuario = adminUsuario;
 	}
+
+	public int getPontuacao() {
+		return pontuacao;
+	}
+
+	public void setPontuacao(int pontuacao) {
+		this.pontuacao = pontuacao;
+	}
+	
+	
 }
