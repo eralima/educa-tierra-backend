@@ -7,11 +7,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.g4.Ecommerce.model.Produto;
+import com.g4.Ecommerce.repository.ProdutoRepository;
 import com.g4.Ecommerce.service.ProdutoService;
 
 @RestController
@@ -21,6 +23,9 @@ import com.g4.Ecommerce.service.ProdutoService;
 public class ProdutoController {
 	
 	@Autowired ProdutoService produtoService;
+	@Autowired
+	private ProdutoRepository repository;
+	
 	
 	@GetMapping
 	public ResponseEntity<?> listaTodosProdutos(){
@@ -44,11 +49,11 @@ public class ProdutoController {
 		}
 	}
 	
-	/*// FindById
+	 //FindById
 	@GetMapping("/{id}")
 	public ResponseEntity<Produto> FindById(@PathVariable long id) {
 		return repository.findById(id).map(resposta -> ResponseEntity.ok(resposta))
 				.orElse(ResponseEntity.notFound().build());
-	}*/
+	}
 
 }

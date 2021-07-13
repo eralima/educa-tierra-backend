@@ -28,7 +28,7 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioService usuarioService;
 	
-	@GetMapping("/{id}")
+	/*@GetMapping("/{id}")
 ResponseEntity<Usuario> getUsuarioById (@PathVariable long id){
 		Optional<Usuario> usuario = usuarioService.meusDados(id);
 		if(!usuario.isEmpty()) {
@@ -36,7 +36,7 @@ ResponseEntity<Usuario> getUsuarioById (@PathVariable long id){
 		} else {
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(usuario.get());
 		}
-	}
+	}*/
 		
 	@PostMapping("/login")
 	ResponseEntity<UsuarioLogin> logar (@RequestBody Optional<UsuarioLogin> user){
