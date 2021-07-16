@@ -3,7 +3,6 @@ package com.g4.Ecommerce.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -53,13 +52,13 @@ public class Usuario {
 	
 	private boolean adminUsuario;
 
-	@ManyToMany (cascade = CascadeType.ALL)
+	@ManyToMany
 	@JoinTable (name = "tabelaFavorita", joinColumns = {@JoinColumn (name = "usuarioId")},
 	inverseJoinColumns = {@JoinColumn (name = "produtoId")})
 	@JsonIgnoreProperties({"favoritadoPor", "senha", "usuario", "meusProdutos"})
 	private List<Produto> meusFavoritos = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER)
 	@JsonIgnoreProperties
 	private List<Produto> meusProdutos = new ArrayList<>();
 	

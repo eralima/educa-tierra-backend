@@ -1,8 +1,6 @@
 package com.g4.Ecommerce.model;
 
 import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -30,7 +28,7 @@ public class Categoria {
 	@Size(min = 5, max = 500)
 	private String descricao;
 
-	@OneToMany(mappedBy = "categoria", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "categoria", fetch = FetchType.EAGER)
 	@JsonIgnoreProperties ({"categoria", "usuario", "meusFavoritos", "favoritadoPor"})
 	private List<Produto> produto;
 

@@ -23,8 +23,9 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 	//ANOTACAO de DEPLOY para autenticar usuario "admin", sem precisar de cadastro=
 	@Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception{
-		/*auth.inMemoryAuthentication()
-		.withUser("admin").password(passwordEncoder().encode("admin")).authorities("ROLE_ADMIN");*/
+		
+		auth.inMemoryAuthentication()
+		.withUser("admin").password(passwordEncoder().encode("admin")).authorities("ROLE_ADMIN");
 
 		auth.userDetailsService(service);
 	}
