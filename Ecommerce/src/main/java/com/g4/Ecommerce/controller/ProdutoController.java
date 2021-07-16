@@ -57,11 +57,17 @@ public class ProdutoController {
 		return repositoryProduto.findById(id).map(resposta -> ResponseEntity.ok(resposta))
 				.orElse(ResponseEntity.notFound().build());
 	}
-	
+
 	//excluir produto
 	@DeleteMapping("/exclusao-produto/{produtoId}")
 	public void deletarProduto(@PathVariable long produtoId) {
 		repositoryProduto.deleteById(produtoId);
 	}
 
+
+	@GetMapping("/titulo/{titulo}")
+	public ResponseEntity<List<Produto>>GetByTitulo(@PathVariable String titulo){
+		return ResponseEntity.ok(repository.findAllByNomeContainingIgnoreCase(titulo));
+	}
+	
 }
