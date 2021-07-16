@@ -173,7 +173,7 @@ public class UsuarioService {
         }
     }
 	
-	public Usuario excluirProduto(long usuarioId, long produtoId) {
+	/*public Usuario excluirProduto(long usuarioId, long produtoId) {
 		Optional<Produto> produtoDeletado = produtoRepository.findById(produtoId);
 		Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
 
@@ -185,7 +185,9 @@ public class UsuarioService {
 		} else {
 			return null;
 		}
-	}
+	}*/
+	
+	
 	
 	/**
 	 * Registra no banco de dados um produto a lista de favoritos de um determinado

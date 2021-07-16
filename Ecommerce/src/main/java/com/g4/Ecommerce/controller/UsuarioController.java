@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -27,6 +26,7 @@ public class UsuarioController {
 
 	@Autowired
 	private UsuarioService usuarioService;
+	
 	
 	/*@GetMapping("/{id}")
 ResponseEntity<Usuario> getUsuarioById (@PathVariable long id){
@@ -79,18 +79,6 @@ ResponseEntity<Usuario> getUsuarioById (@PathVariable long id){
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário ou categoria não encontrada");
 		}	
 	} 
-	
-	//excluir produto
-	@DeleteMapping("/exclusao-produto/{usuarioId}/{produtoId}")
-	ResponseEntity<String> excluirProduto(@PathVariable long usuarioId, @PathVariable long produtoId){
-		Usuario retorno = usuarioService.excluirProduto(usuarioId, produtoId);
-		if(retorno == null) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário ou produto não encontrados");
-		}
-		else {
-			return ResponseEntity.status(HttpStatus.ACCEPTED).body("Produto excluído");
-		}
-	}
 	
 	
 	@PutMapping("/favoritos/usuario/{usuarioId}/produto/{produtoId}")

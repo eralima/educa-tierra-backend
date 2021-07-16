@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +24,9 @@ import com.g4.Ecommerce.service.ProdutoService;
 public class ProdutoController {
 	
 	@Autowired ProdutoService produtoService;
+	
 	@Autowired
-	private ProdutoRepository repository;
+	private ProdutoRepository repositoryProduto;
 	
 	
 	@GetMapping
@@ -52,10 +54,17 @@ public class ProdutoController {
 	 //FindById
 	@GetMapping("/{id}")
 	public ResponseEntity<Produto> FindById(@PathVariable long id) {
-		return repository.findById(id).map(resposta -> ResponseEntity.ok(resposta))
+		return repositoryProduto.findById(id).map(resposta -> ResponseEntity.ok(resposta))
 				.orElse(ResponseEntity.notFound().build());
 	}
-	
+
+	//excluir produto
+	@DeleteMapping("/exclusao-produto/{produtoId}")
+	public void deletarProduto(@PathVariable long produtoId) {
+		repositoryProduto.deleteById(produtoId);
+	}
+
+
 	@GetMapping("/titulo/{titulo}")
 	public ResponseEntity<List<Produto>>GetByTitulo(@PathVariable String titulo){
 		return ResponseEntity.ok(repository.findAllByNomeContainingIgnoreCase(titulo));
