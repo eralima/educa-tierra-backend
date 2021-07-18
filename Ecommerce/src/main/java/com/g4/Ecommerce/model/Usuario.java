@@ -3,10 +3,10 @@ package com.g4.Ecommerce.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -58,7 +58,7 @@ public class Usuario {
 	@JsonIgnoreProperties({"favoritadoPor", "senha", "usuario", "meusProdutos"})
 	private List<Produto> meusFavoritos = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
 	@JsonIgnoreProperties
 	private List<Produto> meusProdutos = new ArrayList<>();
 	
