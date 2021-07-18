@@ -3,11 +3,6 @@ package com.g4.Ecommerce.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-
-//import java.util.List;
-
-//import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -48,12 +43,12 @@ public class Produto {
 	@Enumerated(EnumType.STRING)
 	private TipoProduto tipoProduto;
 	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "categoria")
 	@JsonIgnoreProperties ({"meusProdutos", "senha", "meusFavoritos", "favoritadoPor", "produto"})
 	private Categoria categoria;
 	
-	@ManyToOne (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne (fetch = FetchType.EAGER)
 	@JoinColumn(name = "usuario")
 	@JsonIgnoreProperties ({"meusProdutos", "senha", "meusFavoritos", "favoritadoPor"})
 	private Usuario usuario;
